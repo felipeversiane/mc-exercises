@@ -6,11 +6,16 @@ function main()
   xu = 5.0;
   tol = 1e-6;
   maxInt = 1000;
-  [xr, xAll,fxAll,cont] = structure(xl,xu,tol,maxInt);
-  fprintf("Resultado: f(%.5f) = %.5f \n",xr,f(xr));
-  fprintf("Foi preciso %i interacoes \n",cont);
-  plotCon(xAll,fxAll,cont);
-  plotX(xl,xu,xAll,fxAll,cont);
+  if f(xl)*f(xu) < 0
+    [xr, xAll,fxAll,cont] = structure(xl,xu,tol,maxInt);
+    fprintf("Resultado: f(%.5f) = %.5f \n",xr,f(xr));
+    fprintf("Foi preciso %i interacoes \n",cont);
+    plotCon(xAll,fxAll,cont);
+    plotX(xl,xu,xAll,fxAll,cont);
+  else
+    fprintf("Intervalo nao existe na funcao");
+    hold off;
+  endif
 end
 
 
@@ -66,7 +71,7 @@ function plotX(xl,xu,xAll,fxAll,cont)
       hold off;
       set(gca , "fontsize" , 12);
       legend("f(x)", "Posicao estimada da raiz");
-      title("Grafico de f(x)");
+      title(sprintf("Grafico na interacao %i = f(%5.5f) = %5.5f",i,xAll(i),fxAll(i)));
       xlabel("x");
       ylabel("y");
       grid on;
@@ -77,6 +82,7 @@ endfunction
 
 function plotCon(xAll,fxAll,cont)
    figure(2);
+
    xPlot = xAll(1:cont);
    fxPlot = fxAll(1:cont);
 
