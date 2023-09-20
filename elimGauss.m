@@ -1,57 +1,43 @@
  function elimGauss()
   clc
-  x = zeros(3,1);
-  A = [4 5 -8; 5 -3/2 4; -3 9 9];
-  b = [32; -4; 3];
-  
-  #juntando a matriz A com b;
-  Aa = [A b];
-  
-  #fazer pivotamento parcial antes !
-  
-  #comecando a zerar a matriz;
-  
-  i = 1;
-  j=2;
-  elemPivo = Aa(i,i);
-  fator = Aa(j,i)/elemPivo;
-  Aa(j,:) = Aa(j,:) - fator*Aa(i,:);
-  j = 3;
-  fator = Aa(j,i)/elemPivo;
-  Aa(j,:) = Aa(j,:) - fator*Aa(1,:);
-  
-  #muda o elemento pivo
-  
-  j = 3;
-  i = 2;
-  elemPivo = Aa(i,i);
-  fator = Aa(j,i)/elemPivo;
-  Aa(j,:) = Aa(j,:) - fator*Aa(i,:);
-  
-  #nao precisa mais zerar nada
-  
-  # comeca a resolver as equacoes
-  #achando o valor de z;
-  i =3;
-  x(i) = Aa(i,end)/Aa(i,j);
-  
-  #sumindo o z da equacao de cima;
-  Aa(1:(i-1),i) = Aa(1:(i-1),i) *x(i);
-  
-  #achando o y;
-  i=2;
-  sub = (Aa(i,end)) - Aa(i,i+1);
-  y = sub/Aa(i,i);
-  x(i) = y;
-  
-  #sumindo o y da equacao de cimas;
-  i = 1;
-  j = 2;
-  Aa(i:i,j) = Aa(i:i,j) * x(j);
-  
-  #achando o x;
-  sub = (Aa(i,end)) - (sum(Aa(i,i+1:i+2)));
-  xx = sub/Aa(i,i);
-  x(i) = xx
+  A = [20 5 -8 3 3;5 -3/2 4 1 3;-14 9 9 3 1; -3 10 20 30 20; -3 10 10 30 2];
+  b = [32; -4; 3; 30; 10];
+  [Aa] = pivoting(A,b);
+  [Aa] = zeroing(Aa);
+  [Aa,x1] = structure(Aa);
+  Aa
+  x1
  endfunction
+
+
+ function [Aa] = pivoting(A,b)
+
+   pivoTot = size(A,1);
+   Aa = [A b];
+  for count = 1:pivoTot-1
+     col = Aa(count:end,count);
+     [maxValue, maxIndex] = max(abs(col));
+     maxIndex = count + maxIndex - 1;
+     aux = Aa(count,:);
+     Aa(count,:) = Aa(maxIndex, :);
+     Aa(maxIndex,:) = aux;
+  endfor
+ endfunction
+
+ function [Aa] = zeroing(Aa)
+
+  [n,m] = size(Aa);
+  for i=1:n-1
+    pivot = Aa(i,i);
+    for j=i+1:n
+      f = Aa(j,i)/pivot;
+      Aa(j,:) = Aa(j,:) - f*Aa(i,:);
+    end
+  end
+
+endfunction
+
+function [Aa,x1] = structure(Aa)
+  x1 = zeros(size(Aa,1),1);
+endfunction
 
