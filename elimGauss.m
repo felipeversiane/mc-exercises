@@ -1,11 +1,12 @@
  function elimGauss()
   clc
-  A = [0.780 0.563;0.913 0.659];
-  b = [0.217;0.254];
+  A = [3 2 0;3 2 1;2 1 3];
+  b = [13;13;9];
   [Aa] = pivoting(A,b);
   [Aa] = zeroing(Aa);
   [Aa,x1] = structure(Aa);
   x1
+  x = A\b
  endfunction
 
  function [Aa] = pivoting(A,b)
@@ -27,30 +28,42 @@
   [n,m] = size(Aa);
   for i=1:n-1
     pivot = Aa(i,i);
-    for j=i+1:n
-      if j <= n
-        fator = Aa(j,i)/pivot;
-        Aa(j,i) = 0;
-      end
-    end
-  end
-
+    if pivot == 0
+      aux = Aa(i,:);
+      Aa(i,:) = Aa(i+1,:);
+      Aa(i+1,:) = aux;
+      i = i-1;
+    else
+      for j=i+1:n
+        if j <= n
+          f = Aa(j,i)/pivot;
+          Aa(j,:) = Aa(j,:) - f*Aa(i,:);
+        endif
+      endfor
+    endif
+   endfor
   endfunction
 
   function [Aa,x1] = structure(Aa)
-    n = size(Aa,1);
-    x1 = zeros(n,1);
-    x1(n) = Aa(n,n);
-    for i = n-1:-1:1
-      soma = 0;
-      for j = i+1:n
-        soma = soma + Aa(i,j) * x1(j);
-      end
-      x1(i) = Aa(i,n) - soma;
-    end
-   endfunction
+    x1 = zeros(size(Aa(:,1)));
+    pivotMax = size(Aa,1);
+    for i=pivotMax:-1:1
+      pivot = Aa(i,i);
+      if i == pivotMax
+        x1(i) = Aa(i,end)/pivot;
+        Aa(i-1:-1:1,i)=x1(i)*Aa(i-1:-1:1,i);
+      else
+        sub= sum(Aa(i,i+1:end-1));
+        x1(i) = ((Aa(i,end)-sub)/Aa(i,i));
+        if i > 1
+          Aa(i-1:-1:1,i)= x1(i)*Aa(i-1:-1:1,i);
+        endif
+      endif
+    endfor
+  endfunction
 
-  function s = sistem(x1,x2)
+
+  function s = sistem(x1,x2,x3)
     s = [0.780.*x1 + 0.563.*x2 - 0.217;
          0.913.*x1 + 0.659.*x2 - 0.254];
   endfunction
