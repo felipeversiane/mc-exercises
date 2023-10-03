@@ -41,8 +41,3 @@
 	endfor
   endfor
  endfunction
-
-  function s = sistem(x1,x2,x3)
-    s = [0.780.*x1 + 0.563.*x2 - 0.217;
-         0.913.*x1 + 0.659.*x2 - 0.254];
-  endfunction
