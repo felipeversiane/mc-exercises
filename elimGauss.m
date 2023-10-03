@@ -1,8 +1,8 @@
 
  function elimGauss()
   clc
-  A = [3 2 0;3 2 1;2 1 3];
-  b = [13;13;9];
+  A = [0.780 0.563;0.913 0.659];
+  b = [0.217;0.254];
   [Aa] = pivoting(A,b);
   [Aa] = zeroing(Aa);
   [Aa,x1] = structure(Aa);
@@ -61,4 +61,3 @@
     s = [0.780.*x1 + 0.563.*x2 - 0.217;
          0.913.*x1 + 0.659.*x2 - 0.254];
   endfunction
-
