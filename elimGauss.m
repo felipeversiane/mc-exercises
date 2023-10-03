@@ -1,3 +1,4 @@
+
  function elimGauss()
   clc
   A = [3 2 0;3 2 1;2 1 3];
@@ -28,19 +29,12 @@
   [n,m] = size(Aa);
   for i=1:n-1
     pivot = Aa(i,i);
-    if pivot == 0
-      aux = Aa(i,:);
-      Aa(i,:) = Aa(i+1,:);
-      Aa(i+1,:) = aux;
-      i = i-1;
-    else
       for j=i+1:n
         if j <= n
           f = Aa(j,i)/pivot;
           Aa(j,:) = Aa(j,:) - f*Aa(i,:);
         endif
       endfor
-    endif
    endfor
   endfunction
 
