@@ -57,7 +57,7 @@ function [x1,cont,allX,allFx] = newton(maxIter,tol,x0,a)
 endfunction
 
 function plotAll(iter,allX,allFx)
-  x = -10:0.1:10;
+  x = -5:0.5:5;
   y = x;
   z = zeros(length(x), length(y), 2);
   for xx = 1:numel(x)
@@ -116,10 +116,8 @@ endfunction
 function h = hess(x0)
   x=x0(1);
   y=x0(2);
-  h(1,1) = 2*y^6 + 2*y^4 - 4*y^3 - 2*y^2 - 4*y + 6;
-  h(1,2) = 8*x*y^3 - 4*x*y + 9*y + 12*x*y^5 - 12*x*y^2 + 15.75*y^2 - 4*x + 3 ;
-  h(2,1) = 8 * x * y^3 - 4 * x * y + 9 * y + 12 * x * y^5 - 12 * x * y^2 + 15.75 * y^2 - 4 * x + 3;
-  h(2,2) = 12*x^2*y^2 - 2*x^2 + 9*x + 30*x^2*y^4 - 12*x^2*y + 31.5*x*y;
+  h= [2*y^6+2*y^4-4*y^3-2*y^2-4*y+6,8*x*y^3-4*x*y+9*y+12*x*y^5-12*x*y^2+15.75*y^2-4*x+3;
+      8*x*y^3-4*x*y+9*y+12*x*y^5-12*x*y^2+15.75*y^2-4*x+3,12*x^2*y^2-2*x^2+9*x+30*x^2*y^4-12*x^2*y+31.5*x*y];
 
 endfunction
 
@@ -127,13 +125,13 @@ function g = grad(x0)
 
   x=x0(1);
   y=x0(2);
-  g = [2*x*y^4 + 6*x - 2*x*y^2 + 4.5*y^2 - 12.75 + 2*x*y^6 - 4*x*y^3 + 5.25*y^3 - 4*x*y + 3*y;
-          4*x^2*y^3 - 2*x^2*y + 9*x*y + 6*x^2*y^5 - 6*x^2*y^2 + 15.75*x*y^2 - 2*x^2 + 3*x];
+  g = [2*x*y^4+6*x-2*x*y^2+4.5*y^2-12.75+2*x*y^6-4*x*y^3+5.25*y^3-4*x*y+3*y;
+       4*x^2*y^3-2*x^2*y+9*x*y+6*x^2*y^5-6*x^2*y^2+15.75*x*y^2-2*x^2+3*x];
 endfunction
 
 
-function y = f(x)
-  x1 = x(1);
-  x2 = x(2);
-  y = (x1.*x2.^2 - x1 + 2.25).^2 + (x1.*x2.^3 - x1 + 2.625).^2 + (x1.*x2 -x1 +1.5).^2;
+function y = f(x0)
+  x = x0(1);
+  y = x0(2);
+  y = (x.*y.^2 - x + 2.25).^2 + (x.*y.^3 - x + 2.625).^2 + (x.*y -x +1.5).^2;
 endfunction
