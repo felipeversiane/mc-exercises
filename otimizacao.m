@@ -4,20 +4,20 @@ function otimizacao()
   tol = 1e-3;
   x0 = [4;1];
   x = [3;0.5];
-  is = 1;
+  is = 2;
   if is == 1
     a = 0.0163;
     [x1,cont,allX,allFx] = gradient(maxIter,tol,x0,a);
   elseif is == 2
-    a = 0.0003;
+    a = 0.691;
     [x1,cont,allX,allFx] = newton(maxIter,tol,x0,a);
   endif
   [result] = distEuclidiana(x,x1);
   fprintf("O resultado do ponto minimo será de: \nx1 = %f.5 \nx2 = %f.5\n",x1(1),x1(2));
   fprintf("Em um total de %i iteracoes\n",cont);
   fprintf("Com a distancia euclidiana igual a : %f.5\n",result);
-  plotConv(cont,allX,allFx);
-  plotAll(cont,allX,allFx);
+  #plotConv(cont,allX,allFx);
+  #plotAll(cont,allX,allFx);
 endfunction
 
 function [result] = distEuclidiana(x,x1)
@@ -116,9 +116,9 @@ endfunction
 function h = hess(x0)
   x=x0(1);
   y=x0(2);
-  h= [2*y^6+2*y^4-4*y^3-2*y^2-4*y+6,8*x*y^3-4*x*y+9*y+12*x*y^5-12*x*y^2+15.75*y^2-4*x+3;
-      8*x*y^3-4*x*y+9*y+12*x*y^5-12*x*y^2+15.75*y^2-4*x+3,12*x^2*y^2-2*x^2+9*x+30*x^2*y^4-12*x^2*y+31.5*x*y];
-
+  #h= [2*y^6+2*y^4-4*y^3-2*y^2-4*y+6,8*x*y^3-4*x*y+9*y+12*x*y^5-12*x*y^2+15.75*y^2-4*x+3;8*x*y^3-4*x*y+9*y+12*x*y^5-12*x*y^2+15.75*y^2-4*x+3,12*x^2*y^2-2*x^2+9*x+30*x^2*y^4-12*x^2*y+31.5*x*y];
+  #h=[12y^4+12xy^6-12xy^3+6y^2+2, 8xy^4-4y^2-4xy^2+13.5y,8xy^3-4x^2y+9y+30x^2y^5-12x^2y^2+31.5y, 24x^2y^4-4x^2+15.75];
+  h = [2*y^4+6-2*y^2+2*y^6-4*y^3+5.25,8*x*y^3-2*x+9+6*y^5-12*y^2+15.75;8*x*y^3-2*x+9+6*y^5-12*y^2+15.75,12*x^2*y^2-2*x^2+9+30*x^2*y^4-12*x^2*y+31.5*x];
 endfunction
 
 function g = grad(x0)
@@ -133,5 +133,5 @@ endfunction
 function y = f(x0)
   x = x0(1);
   y = x0(2);
-  y = (x.*y.^2 - x + 2.25).^2 + (x.*y.^3 - x + 2.625).^2 + (x.*y -x +1.5).^2;
+  y = (x*y^2-x+2.25)^2+(x*y^3-x+2.625)^2+(x*y-x+1.5)^2;
 endfunction
